@@ -1,10 +1,20 @@
 <template>
   <div id="app">
-    <router-view/>
+    <div id="display">
+      <router-view/>
+    </div>
+    <div id="nav">
+      <img id="nav-icon" src="./assets/logo_xsmall.png">
+      <div id="nav-title">Liveframe</div>
+    </div>
   </div>
 </template>
 
 <style lang="scss">
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
 }
@@ -19,16 +29,31 @@ body {
   height: 480px;
 }
 
+#display {
+  height: 450px;
+  overflow: hidden;
+}
+
 #nav {
-  padding: 30px;
+  height: 30px;
+  padding: 1px 10px;
+  background: #454545;
+  color: white;
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+  * {
+    height: 28px;
+  }
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+  #nav-title {
+    display: block;
+    line-height: 28px;
+  }
+
+  #nav-icon {
+    display: block;
+    position: fixed;
+    width: 28px;
+    height: 28px;
   }
 }
 </style>
