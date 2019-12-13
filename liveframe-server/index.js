@@ -6,6 +6,10 @@ app.get('/', (req, res) => {
   res.send('<h1>howdy doody</h1>')
 })
 
+app.get('/sun-times', (req, res) => {
+  res.send(require('./sun_times.json'))
+})
+
 io.on('connection', (socket) => {
   console.log('user connected')
   socket.on('disconnect', () => {
