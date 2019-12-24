@@ -11,3 +11,6 @@ npm-debug.log*
 
 # Editor directories and files
 .vscode
+
+# token
+/src/assets/token.json

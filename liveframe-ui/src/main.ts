@@ -5,11 +5,16 @@ import router from './router'
 import store from './store'
 import VueSocketIO from 'vue-socket.io'
 
+let { token } = require('./assets/token.json')
+if (!token) {
+  token = 'UNKNOWN'
+}
+
 Vue.config.productionTip = false
 
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: 'http://localhost:3000',
+  connection: `http://localhost:3000?token=${token}`,
   vuex: {
     store,
     actionPrefix: 'SOCKET_',

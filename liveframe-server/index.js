@@ -11,7 +11,8 @@ app.get('/sun-times', (req, res) => {
 })
 
 io.on('connection', (socket) => {
-  console.log('user connected')
+  const token = socket.handshake.query.token
+  console.log('user connected with token ' + token)
   socket.on('disconnect', () => {
     console.log('user disconnected')
   })
