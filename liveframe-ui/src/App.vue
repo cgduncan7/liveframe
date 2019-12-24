@@ -25,12 +25,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  width: 800px;
-  height: 480px;
+  width: 780px;
+  height: 460px;
 }
 
 #display {
-  height: 450px;
+  height: 430px;
   overflow: hidden;
 }
 
