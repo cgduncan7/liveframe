@@ -1,8 +1,19 @@
 <template>
   <div id="window">
-    <img src="http://home.collinduncan.com:54321/images/window.jpg">
+    <WindowImage />
   </div>
 </template>
+
+<script lang="ts">
+import WindowImage from '@/components/WindowImage.vue'
+
+export default {
+  name: 'window',
+  components: {
+    WindowImage
+  }
+}
+</script>
 
 <style lang="scss">
 #window {
