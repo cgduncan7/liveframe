@@ -1,16 +1,20 @@
 <template>
   <div id="window">
-    <WindowImage />
+    <Frame childComponentSource='WindowImage' />
   </div>
 </template>
 
 <script lang="ts">
+import Vue from 'vue'
+import Frame from '@/components/Frame.vue'
 import WindowImage from '@/components/WindowImage.vue'
+
+Vue.component('WindowImage', WindowImage)
 
 export default {
   name: 'window',
   components: {
-    WindowImage
+    Frame
   }
 }
 </script>

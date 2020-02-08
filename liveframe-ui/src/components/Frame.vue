@@ -1,13 +1,28 @@
 <template>
   <div id="frame">
     <div id="display">
+      <component :is="childComponentSource" />
     </div>
     <div id="nav">
-      <img id="nav-icon" src="./assets/logo_xsmall.png" v-on:click="toggleMenu">
+      <img id="nav-icon" src="@/assets/logo_xsmall.png">
       <div id="nav-title">Liveframe</div>
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import { VueConstructor } from 'vue'
+import {
+  Component,
+  Prop,
+  Vue
+} from 'vue-property-decorator'
+
+@Component
+export default class Frame extends Vue {
+  @Prop() private childComponentSource!: string
+}
+</script>
 
 <style lang="scss">
 #frame {
