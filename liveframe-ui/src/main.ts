@@ -22,6 +22,8 @@ Vue.use(new VueSocketIO({
   }
 }))
 
+store.dispatch('watchTime')
+
 new Vue({
   router,
   store,
