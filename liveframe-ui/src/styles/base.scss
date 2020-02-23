@@ -1,0 +1,13 @@
+@import './colors.scss';
+
+* {
+  color: $base-white;
+}
+
+button {
+  border: none;
+  outline: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+}
