@@ -53,7 +53,6 @@ export default new Vuex.Store({
         .then((res) => {
           commit('setSunTimes', res.data.results)
         })
-        .catch((e) => console.log(e))
     }
   },
   modules: {
