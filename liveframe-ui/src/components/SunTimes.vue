@@ -39,14 +39,25 @@ export default class SunTimes extends Vue {
   }
 
   get sunrise () {
-    return this.$store.state.sunTimes.sunrise || 'Loading...'
+    const t = this.$store.state.sunTimes.sunrise
+    return (t ? this.formatTime(t) : 'Loading...')
   }
 
   get sunset () {
-    return this.$store.state.sunTimes.sunset || 'Loading...'
+    const t = this.$store.state.sunTimes.sunset
+    return (t ? this.formatTime(t) : 'Loading...')
   }
 
-  currentTime () {
+  formatTime (time: string) : String {
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric'
+    }
+
+    return Intl.DateTimeFormat('en-US', options).format(new Date(time))
+  }
+
+  currentTime () : String {
     let ampm = 'AM'
     let hours = this.date.getHours()
     if (hours > 12) {
@@ -63,12 +74,12 @@ export default class SunTimes extends Vue {
   calculateSunPosition () {
     const now: number = this.date.getTime()
     const srd: Date = new Date(now)
-    srd.setHours(this.sunrise.substring(0, 1))
-    srd.setMinutes(this.sunrise.substring(2, 4))
+    srd.setHours(Number.parseInt(this.sunrise.substring(0, 1)))
+    srd.setMinutes(Number.parseInt(this.sunrise.substring(2, 4)))
 
     const ssd: Date = new Date(now)
     ssd.setHours(Number.parseInt(this.sunset.substring(0, 1)) + 12)
-    ssd.setMinutes(this.sunset.substring(2, 4))
+    ssd.setMinutes(Number.parseInt(this.sunset.substring(2, 4)))
 
     const sunrise: number = srd.getTime()
     const sunset: number = ssd.getTime()
