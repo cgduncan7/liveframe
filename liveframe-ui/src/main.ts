@@ -12,15 +12,15 @@ if (!token) {
 
 Vue.config.productionTip = false
 
-Vue.use(new VueSocketIO({
-  debug: true,
-  connection: `http://localhost:3000?token=${token}`,
-  vuex: {
-    store,
-    actionPrefix: 'SOCKET_',
-    mutationPrefix: 'SOCKET_'
-  }
-}))
+// Vue.use(new VueSocketIO({
+//   debug: true,
+//   connection: `http://home.collinduncan.com:54321/liveframe-server?token=${token}`,
+//   vuex: {
+//     store,
+//     actionPrefix: 'SOCKET_',
+//     mutationPrefix: 'SOCKET_'
+//   }
+// }))
 
 store.dispatch('watchTime')
 
