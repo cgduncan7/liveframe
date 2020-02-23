@@ -1,3 +1,4 @@
+const fs = require('fs')
 const app = require('express')()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
@@ -10,7 +11,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('/sun-times', (req, res) => {
-  res.send(require('./sun_times.json'))
+  const data = fs.readFileSync('sun_times.json')
+  res.json(JSON.parse(data))
 })
 
 io.on('connection', (socket) => {
