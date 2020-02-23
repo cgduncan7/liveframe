@@ -34,6 +34,8 @@ export default class Frame extends Vue {
 </script>
 
 <style lang="scss">
+@import '@/styles/base.scss';
+
 #frame {
   position: relative;
   width: 100%;
@@ -50,8 +52,8 @@ export default class Frame extends Vue {
   position: relative;
   height: 30px;
   padding: 1px 10px;
-  background: #454545;
-  color: white;
+  background: $base-gray;
+  color: $base-white;
 
   * {
     height: 28px;
