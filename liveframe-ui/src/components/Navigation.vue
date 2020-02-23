@@ -1,15 +1,19 @@
 <template>
   <div id="root">
-    <button>Window</button>
-    <button>Photo</button>
+    <button v-on:click="nav('window')">Window</button>
+    <button v-on:click="nav('photo')">Photo</button>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { RawLocation } from 'vue-router'
 
 @Component
 export default class Navigation extends Vue {
+  nav (dest: RawLocation) {
+    this.$router.replace(dest)
+  }
 }
 </script>
 

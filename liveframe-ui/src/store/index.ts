@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    date: {},
+    date: new Date(),
     dateWatcher: undefined,
     sunTimes: {}
   },

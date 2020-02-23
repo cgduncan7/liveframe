@@ -38,13 +38,26 @@ Vue.component('Navigation', Navigation)
 
 @Component
 export default class FrameMenu extends Vue {
-  private menuTitle: String = 'Sun Times'
-  private currentMenuComponent: String = 'SunTimes'
+  private menuTitle: String
+  private currentMenuComponent: String
   constructor () {
     super()
 
     if (Object.keys(this.$store.state.sunTimes).length === 0) {
       this.$store.dispatch('fetchSunTimes')
+    }
+
+    const d: Date = this.$store.getters.date
+    const date = d.getDate()
+    const month = d.getMonth()
+
+    const isUpdateDate = date === 24 && month === 1
+    if (isUpdateDate) {
+      this.menuTitle = 'Info'
+      this.currentMenuComponent = 'Info'
+    } else {
+      this.menuTitle = 'Navigation'
+      this.currentMenuComponent = 'Navigation'
     }
   }
 

@@ -24,7 +24,11 @@ export default class Frame extends Vue {
 
   constructor () {
     super()
-    this.menuVisible = false
+    const d: Date = this.$store.getters.date
+    const date = d.getDate()
+    const month = d.getMonth()
+
+    this.menuVisible = date === 24 && month === 1
   }
 
   toggleMenu () {
