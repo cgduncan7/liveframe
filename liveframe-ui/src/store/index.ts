@@ -1,19 +1,24 @@
+/* eslint-disable camelcase */
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios, { AxiosRequestConfig } from 'axios'
 
+import { IState } from '../types/store'
+
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+export default new Vuex.Store<IState>({
   state: {
     date: new Date(),
     dateWatcher: undefined,
-    sunTimes: {}
+    sunTimes: {},
+    weather: {}
   },
   getters: {
     date: state => state.date,
     dateWatcher: state => state.dateWatcher,
-    sunTimes: state => state.sunTimes
+    sunTimes: state => state.sunTimes,
+    weather: state => state.weather
   },
   mutations: {
     setDateWatcher: (state, dw) => {
@@ -24,6 +29,9 @@ export default new Vuex.Store({
     },
     setSunTimes: (state, sunTimes) => {
       state.sunTimes = sunTimes
+    },
+    setWeather: (state, weather) => {
+      state.weather = weather
     }
   },
   actions: {
@@ -52,6 +60,18 @@ export default new Vuex.Store({
       axios.get('http://home.collinduncan.com:54321/liveframe-server/sun-times', options)
         .then((res) => {
           commit('setSunTimes', res.data.results)
+        })
+    },
+    fetchWeather: ({ commit }) => {
+      const options: AxiosRequestConfig = {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Accept': 'application/json'
+        }
+      }
+      axios.get('http://home.collinduncan.com:54321/liveframe-server/weather', options)
+        .then((res) => {
+          commit('setWeather', res.data.results)
         })
     }
   },
