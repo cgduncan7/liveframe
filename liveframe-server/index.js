@@ -7,11 +7,16 @@ const cors = require('cors')
 app.use(cors())
 
 app.get('/', (req, res) => {
-  res.send('<h1>howdy doody</h1>')
+  res.send('OK').status(200)
 })
 
 app.get('/sun-times', (req, res) => {
   const data = fs.readFileSync('sun_times.json')
+  res.json(JSON.parse(data))
+})
+
+app.get('/weather', (req, res) => {
+  const data = fs.readFileSync('weather.json')
   res.json(JSON.parse(data))
 })
 
