@@ -7,6 +7,10 @@ import { IState } from '../types/store'
 
 Vue.use(Vuex)
 
+const serverUrl = process.env.NODE_ENV === 'production'
+  ? 'http://home.collinduncan.com:54321/liveframe-server'
+  : 'localhost:3000'
+
 export default new Vuex.Store<IState>({
   state: {
     date: new Date(),
@@ -57,7 +61,7 @@ export default new Vuex.Store<IState>({
           'Accept': 'application/json'
         }
       }
-      axios.get('http://home.collinduncan.com:54321/liveframe-server/sun-times', options)
+      axios.get(`${serverUrl}/sun-times`, options)
         .then((res) => {
           commit('setSunTimes', res.data.results)
         })
@@ -69,7 +73,7 @@ export default new Vuex.Store<IState>({
           'Accept': 'application/json'
         }
       }
-      axios.get('http://home.collinduncan.com:54321/liveframe-server/weather', options)
+      axios.get(`${serverUrl}/weather`, options)
         .then((res) => {
           commit('setWeather', res.data.results)
         })
