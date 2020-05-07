@@ -9,6 +9,9 @@
         </div>
         {{ menuTitle }}
         <div id="menu-icons-right">
+          <FrameMenuIcon :toggled="currentMenuComponent === 'Weather'" emitValue="toggle-weather" v-on:toggle-weather="toggleWeather">
+            <img src="@/assets/weather_icons/thermometer-medium.svg"/>
+          </FrameMenuIcon>
           <FrameMenuIcon :toggled="currentMenuComponent === 'SunTimes'" emitValue="toggle-st" v-on:toggle-st="toggleSunTimes">
             <img src="@/assets/sun.svg"/>
           </FrameMenuIcon>
@@ -30,9 +33,11 @@ import FrameMenuIcon from '@/components/FrameMenuIcon.vue'
 import SunTimes from '@/components/SunTimes.vue'
 import Info from '@/components/Info.vue'
 import Navigation from '@/components/Navigation.vue'
+import Weather from './Weather.vue'
 
 Vue.component('FrameMenuIcon', FrameMenuIcon)
 Vue.component('SunTimes', SunTimes)
+Vue.component('Weather', Weather)
 Vue.component('Info', Info)
 Vue.component('Navigation', Navigation)
 
@@ -45,6 +50,10 @@ export default class FrameMenu extends Vue {
 
     if (Object.keys(this.$store.state.sunTimes).length === 0) {
       this.$store.dispatch('fetchSunTimes')
+    }
+
+    if (Object.keys(this.$store.state.weather).length === 0) {
+      this.$store.dispatch('fetchWeather')
     }
 
     const d: Date = this.$store.getters.date
@@ -74,6 +83,11 @@ export default class FrameMenu extends Vue {
   toggleInfo () {
     this.currentMenuComponent = 'Info'
     this.menuTitle = 'Info'
+  }
+
+  toggleWeather () {
+    this.currentMenuComponent = 'Weather'
+    this.menuTitle = 'Weather'
   }
 }
 </script>
