@@ -3,6 +3,8 @@ const app = require('express')()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
 const cors = require('cors')
+const jimp = require('jimp')
+const Busboy = require('busboy')
 
 app.use(cors())
 
@@ -11,14 +13,55 @@ app.get('/', (req, res) => {
 })
 
 app.get('/sun-times', (req, res) => {
-  const data = fs.readFileSync('sun_times.json')
-  res.json(JSON.parse(data))
+  fs.readFile('sun_times.json', (err, data) => {
+    if (err) console.error(err)
+    else res.json(JSON.parse(data))
+  })
 })
 
 app.get('/weather', (req, res) => {
-  const data = fs.readFileSync('weather.json')
-  res.json(JSON.parse(data))
+  fs.readFileSync('weather.json', (err, data) => {
+    if (err) console.error(err)
+    else res.json(JSON.parse(data))
+  })
 })
+
+app.post('/image', (req, res, next) => {
+  const acceptable = req.accepts('png')
+  if (!acceptable) {
+    res.sendStatus(406)
+    next()
+  }
+
+  const bb = new Busboy({ headers: req.headers })
+  const saveTo = process.env.NODE_ENV === 'production'
+    ? '/var/images/photo_orig.jpg'
+    : './images/image_orig.jpg'
+
+  bb.on('file', (fieldname, file, filename, encoding, mimetype) => {
+    file.pipe(fs.createWriteStream(saveTo))
+  })
+
+  bb.on('finish', () => {
+    res.writeHead(200, { Connection: 'close' })
+    res.end()
+    resizeImage(saveTo)
+  })
+  
+  req.pipe(bb)
+})
+
+function resizeImage(filename) {
+  const saveTo = process.env.NODE_ENV === 'production'
+    ? '/var/images/photo.jpg'
+    : './images/image.jpg'
+
+  jimp.read(filename, (_, orig) => {
+    orig.cover(780, 430, (_, mod) => {
+      mod.write(saveTo)
+    })
+  })
+}
 
 io.on('connection', (socket) => {
   const token = socket.handshake.query.token
