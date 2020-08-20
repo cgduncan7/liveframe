@@ -155,7 +155,7 @@ export default class SunTimes extends Vue {
   position: absolute;
   width: 100%;
   height: 1px;
-  border: 1px solid $base-black;
+  border: 1px solid $base-white;
   top: 50%;
 }
 </style>
