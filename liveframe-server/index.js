@@ -33,18 +33,20 @@ app.get('/weather', (req, res) => {
 
 app.post('/image', authenticator, (req, res, next) => {
   const bb = new Busboy({ headers: req.headers })
-  const saveTo = process.env.NODE_ENV === 'production'
-    ? '/var/images/photo_orig.jpg'
-    : './images/image_orig.jpg'
+  let filename = `${new Date().toDateString()}.jpg`
+  let newFileLoc = process.env.NODE_ENV === 'production'
+    ? '/var/images/'
+    : './images/'
 
-  bb.on('file', (fieldname, file, filename, encoding, mimetype) => {
-    file.pipe(fs.createWriteStream(saveTo))
+  bb.on('file', (_fieldname, _file, _filename, _encoding, _mimetype) => {
+    filename = _filename
+    _file.pipe(fs.createWriteStream(newFileLoc + filename))
   })
 
   bb.on('finish', () => {
     res.writeHead(200, { Connection: 'close' })
     res.end()
-    resizeImage(saveTo)
+    resizeImage(newFileLoc + filename)
   })
   
   req.pipe(bb)
