@@ -11,3 +11,6 @@ weather.json
 
 # env files
 .env
+
+# image dev uploads folder
+images/
