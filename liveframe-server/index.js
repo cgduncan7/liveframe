@@ -1,3 +1,6 @@
+// load .env
+require('dotenv').config()
+
 const fs = require('fs')
 const app = require('express')()
 const http = require('http').createServer(app)
@@ -5,6 +8,8 @@ const io = require('socket.io')(http)
 const cors = require('cors')
 const jimp = require('jimp')
 const Busboy = require('busboy')
+
+const authenticator = require('./authenticator')
 
 app.use(cors())
 
@@ -20,19 +25,13 @@ app.get('/sun-times', (req, res) => {
 })
 
 app.get('/weather', (req, res) => {
-  fs.readFileSync('weather.json', (err, data) => {
+  fs.readFile('weather.json', (err, data) => {
     if (err) console.error(err)
     else res.json(JSON.parse(data))
   })
 })
 
-app.post('/image', (req, res, next) => {
-  const acceptable = req.accepts('png')
-  if (!acceptable) {
-    res.sendStatus(406)
-    next()
-  }
-
+app.post('/image', authenticator, (req, res, next) => {
   const bb = new Busboy({ headers: req.headers })
   const saveTo = process.env.NODE_ENV === 'production'
     ? '/var/images/photo_orig.jpg'
