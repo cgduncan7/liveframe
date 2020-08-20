@@ -1,16 +1,25 @@
 <template>
   <div id="root">
-    <div id="weather">
-      <div id="code">
-        <img v-bind:src="weatherCodeSrc">
-        <span>{{ normalizedWeatherCode }}</span>
-      </div>
-      <div id="stats">
-      </div>
+    <div id="code">
+      <img v-if="displayWeatherIcon('hail')" src="@/assets/weather_icons/hail.svg">
+      <img v-if="displayWeatherIcon('cloud-snow-single')" src="@/assets/weather_icons/cloud-snow-single.svg">
+      <img v-if="displayWeatherIcon('lightning')" src="@/assets/weather_icons/lightning.svg">
+      <img v-if="displayWeatherIcon('cloud-rain-single')" src="@/assets/weather_icons/cloud-rain-single.svg">
+      <img v-if="displayWeatherIcon('fog')" src="@/assets/weather_icons/fog.svg">
+      <img v-if="displayWeatherIcon('clouds')" src="@/assets/weather_icons/clouds.svg">
+      <img v-if="displayWeatherIcon('sun-cloud')" src="@/assets/weather_icons/sun-cloud.svg">
+      <img v-if="displayWeatherIcon('sun')" src="@/assets/weather_icons/sun.svg">
+      <span>{{ normalizedWeatherCode }}</span>
+    </div>
+    <div id="stats">
       <div id="temp">
-        <img src="@/assets/weather_icons/thermometer-medium.svg" />
-        <span>Actual: {{ temp }}</span>
-        <span>Feels like: {{ feelsLike }}</span>
+        <img v-if="isTemp('medium')" src="@/assets/weather_icons/thermometer-medium.svg" />
+        <img v-if="isTemp('hot')" src="@/assets/weather_icons/thermometer-hot.svg" />
+        <img v-if="isTemp('cold')" src="@/assets/weather_icons/thermometer-cold.svg" />
+        <div id="values">
+          <span>Actual: {{ temp }}</span>
+          <span>Feels like: {{ feelsLike }}</span>
+        </div>
       </div>
       <div id="wind">
         <img src="@/assets/weather_icons/wind.svg" />
@@ -29,25 +38,12 @@ import { IWeather, IWeatherValue, WeatherValueType } from '../types/weather'
 
 @Component
 export default class Weather extends Vue {
-  weatherCodeSrc: any = undefined
-
   constructor () {
     super()
 
     if (this.$store.state.weather === undefined) {
       this.$store.dispatch('fetchWeather')
     }
-
-    this.$store.subscribe((mutation, state) => {
-      if (mutation.type === 'setWeather') {
-        const payload: IWeather = mutation.payload
-        const code = payload.weather_code.value
-        this.getWeatherCodeSrc().then((src) => {
-          console.log(src)
-          this.weatherCodeSrc = src
-        })
-      }
-    })
   }
 
   get date () {
@@ -115,8 +111,49 @@ export default class Weather extends Vue {
     }
   }
 
-  async getWeatherCodeSrc (): Promise<any> {
-    return import(`@/assets/weather_icons/${this.getWeatherCodeIcon(this.weatherCode)}.svg`)
+  getWeatherCodeIcon (weatherCode: string): string {
+    if (weatherCode === undefined) {
+      return 'sun'
+    }
+    switch (weatherCode.toLowerCase()) {
+      case 'freezing_rain_heavy':
+      case 'freezing_rain':
+      case 'freezing_rain_light':
+      case 'freezing_drizzle':
+      case 'ice_pellets_heavy':
+      case 'ice_pellets':
+      case 'ice_pellets_light': return 'hail'
+      case 'snow_heavy':
+      case 'snow':
+      case 'snow_light':
+      case 'flurries': return 'cloud-snow-single'
+      case 'tstorm': return 'lightning'
+      case 'rain_heavy':
+      case 'rain':
+      case 'rain_light':
+      case 'drizzle': return 'cloud-rain-single'
+      case 'fog_light':
+      case 'fog': return 'fog'
+      case 'cloudy': return 'clouds'
+      case 'mostly_cloudy':
+      case 'partly_cloudy':
+      case 'mostly_clear': return 'sun-cloud'
+      case 'clear': return 'sun'
+      default: return 'sun'
+    }
+  }
+
+  displayWeatherIcon (iconName: string): boolean {
+    return this.getWeatherCodeIcon(this.weatherCode) === iconName
+  }
+
+  isTemp (temp: string): boolean {
+    switch (temp) {
+      case 'hot': return this.weather.temp.value > 75
+      case 'cold': return this.weather.temp.value < 45
+      case 'medium': return this.weather.temp.value <= 75 && this.weather.temp.value >= 45
+      default: return false
+    }
   }
 
   formatField (val: IWeatherValue, type: WeatherValueType): string {
@@ -143,35 +180,6 @@ export default class Weather extends Vue {
     }
     return `${value} ${units}`
   }
-
-  getWeatherCodeIcon (weatherCode: string): string {
-    switch (weatherCode.toLowerCase()) {
-      case 'freezing_rain_heavy':
-      case 'freezing_rain':
-      case 'freezing_rain_light':
-      case 'freezing_drizzle':
-      case 'ice_pellets_heavy':
-      case 'ice_pellets':
-      case 'ice_pellets_light': return 'hail'
-      case 'snow_heavy':
-      case 'snow':
-      case 'snow_light': return 'cloud-snow-single'
-      case 'flurries': return 'sun-cloud-snow'
-      case 'tstorm': return 'lightning'
-      case 'rain_heavy': return 'cloud-rain-single'
-      case 'rain':
-      case 'rain_light':
-      case 'drizzle': return 'cloud-rain-single'
-      case 'fog_light':
-      case 'fog': return 'fog'
-      case 'cloudy':
-      case 'mostly_cloudy': return 'clouds'
-      case 'partly_cloudy':
-      case 'mostly_clear': return 'sun-cloud'
-      case 'clear': return 'sun'
-      default: return 'sun'
-    }
-  }
 }
 </script>
 
@@ -184,11 +192,56 @@ export default class Weather extends Vue {
   height: 100%;
   padding: 5%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   > * {
     margin-bottom: 20px;
   }
   color: white;
+}
+
+#code {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  > img {
+    height: 80%
+  }
+
+  > span {
+    height: 20%;
+    font-size: 24px;
+  }
+}
+
+#stats {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-around;
+
+  > #temp {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+    > img {
+      height: 100%;
+    }
+
+    > #values {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: space-around;
+    }
+  }
 }
 </style>
