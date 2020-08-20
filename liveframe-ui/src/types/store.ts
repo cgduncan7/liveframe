@@ -4,6 +4,6 @@ import { IWeather } from './weather'
 export interface IState {
   date: Date,
   dateWatcher: number | undefined,
-  sunTimes: ISunTimes,
-  weather: IWeather
+  sunTimes: ISunTimes | undefined,
+  weather: IWeather | undefined
 }

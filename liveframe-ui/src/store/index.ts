@@ -9,14 +9,14 @@ Vue.use(Vuex)
 
 const serverUrl = process.env.NODE_ENV === 'production'
   ? 'http://home.collinduncan.com:54321/liveframe-server'
-  : 'localhost:3000'
+  : 'http://localhost:3000'
 
 export default new Vuex.Store<IState>({
   state: {
     date: new Date(),
     dateWatcher: undefined,
-    sunTimes: {},
-    weather: {}
+    sunTimes: undefined,
+    weather: undefined
   },
   getters: {
     date: state => state.date,
@@ -75,7 +75,7 @@ export default new Vuex.Store<IState>({
       }
       axios.get(`${serverUrl}/weather`, options)
         .then((res) => {
-          commit('setWeather', res.data.results)
+          commit('setWeather', res.data)
         })
     }
   },

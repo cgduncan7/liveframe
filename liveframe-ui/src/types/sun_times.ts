@@ -14,6 +14,6 @@ export interface ISunTimesResults {
 }
 
 export interface ISunTimes {
-  results?: ISunTimesResults
-  status?: string
+  results: ISunTimesResults
+  status: string
 }
