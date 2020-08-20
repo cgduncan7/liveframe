@@ -1,3 +1,3 @@
 module.exports = {
-    publicPath: '/liveframe-ui',
+  publicPath: '/liveframe-ui'
 }
