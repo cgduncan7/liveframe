@@ -7,7 +7,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 
 @Component
 export default class WindowImage extends Vue {
-  private src: string;
+  private src: string
   constructor () {
     super()
 

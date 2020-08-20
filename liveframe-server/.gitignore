@@ -1,6 +1,10 @@
 node_modules/
 *.log
 
+# files for sun_times
 sun_times.json
 sunset_hour
 sunrise_hour
+
+# files for weather
+weather.json
