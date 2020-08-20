@@ -13,21 +13,38 @@
     </div>
     <div id="stats">
       <div id="temp">
+        <div id="values">
+          <span>{{ temp }} (feels like {{ feelsLike }})</span>
+        </div>
         <img v-if="isTemp('medium')" src="@/assets/weather_icons/thermometer-medium.svg" />
         <img v-if="isTemp('hot')" src="@/assets/weather_icons/thermometer-hot.svg" />
         <img v-if="isTemp('cold')" src="@/assets/weather_icons/thermometer-cold.svg" />
-        <div id="values">
-          <span>Actual: {{ temp }}</span>
-          <span>Feels like: {{ feelsLike }}</span>
-        </div>
       </div>
       <div id="wind">
-        <img src="@/assets/weather_icons/wind.svg" />
-        <span>{{ windSpeed }}</span>
-        <img src="@/assets/weather_icons/compass-west.svg" />
+        <div id="values">
+          <span>{{ windSpeed }} {{ windDirection }}</span>
+        </div>
+        <img v-if="isWindDirection('north')" src="@/assets/weather_icons/compass-north.svg" />
+        <img v-if="isWindDirection('north-east')" src="@/assets/weather_icons/compass-north-east.svg" />
+        <img v-if="isWindDirection('east')" src="@/assets/weather_icons/compass-east.svg" />
+        <img v-if="isWindDirection('south-east')" src="@/assets/weather_icons/compass-south-east.svg" />
+        <img v-if="isWindDirection('south')" src="@/assets/weather_icons/compass-south.svg" />
+        <img v-if="isWindDirection('south-west')" src="@/assets/weather_icons/compass-south-west.svg" />
+        <img v-if="isWindDirection('west')" src="@/assets/weather_icons/compass-west.svg" />
+        <img v-if="isWindDirection('north-west')" src="@/assets/weather_icons/compass-north-west.svg" />
       </div>
-      <div id="humidity"></div>
-      <div id="precipitation"></div>
+      <div id="humidity">
+        <div id="values">
+          <span>{{ humidity }} humidity</span>
+        </div>
+        <img src="@/assets/weather_icons/barometer.svg">
+      </div>
+      <div id="precipitation">
+        <div id="values">
+          <span>{{ precipitation }}</span>
+        </div>
+        <img src="@/assets/weather_icons/raindrop.svg">
+      </div>
     </div>
   </div>
 </template>
@@ -156,6 +173,22 @@ export default class Weather extends Vue {
     }
   }
 
+  isWindDirection (windDir: string): boolean {
+    const degrees = this.weather.wind_direction.value
+    console.log(degrees)
+    switch (windDir) {
+      case 'north': return degrees >= 348.76 || degrees <= 33.75
+      case 'north-east': return degrees >= 33.76 && degrees <= 78.75
+      case 'east': return degrees >= 78.76 && degrees <= 123.75
+      case 'south-east': return degrees >= 123.76 && degrees <= 168.75
+      case 'south': return degrees >= 168.76 && degrees <= 213.75
+      case 'south-west': return degrees >= 213.76 && degrees <= 258.75
+      case 'west': return degrees >= 258.76 && degrees <= 303.75
+      case 'north-west': return degrees >= 303.75 && degrees <= 348.75
+      default: return false
+    }
+  }
+
   formatField (val: IWeatherValue, type: WeatherValueType): string {
     if (!val) return '...'
     let units = val.units ? `${val.units}` : ''
@@ -165,9 +198,27 @@ export default class Weather extends Vue {
         units = '°' + units
         value = Math.round(val.value as number)
         break
-      case WeatherValueType.HUMIDITY:
-      case WeatherValueType.PRECIPITATION:
-      case WeatherValueType.WIND_DIRECTION:
+      case WeatherValueType.HUMIDITY: {
+        value = Math.round(val.value as number)
+        return `${value}${units}`
+      }
+      case WeatherValueType.PRECIPITATION: {
+        value = Math.round(val.value as number)
+        break
+      }
+      case WeatherValueType.WIND_DIRECTION: {
+        const value = val.value as number
+        console.log(value)
+        if (value >= 348.76 || value <= 33.75) return 'N'
+        else if (value >= 33.76 && value <= 78.75) return 'NE'
+        else if (value >= 78.76 && value <= 123.75) return 'E'
+        else if (value >= 123.76 && value <= 168.75) return 'SE'
+        else if (value >= 168.76 && value <= 213.75) return 'S'
+        else if (value >= 213.76 && value <= 258.75) return 'SW'
+        else if (value >= 258.76 && value <= 303.75) return 'W'
+        else if (value >= 303.75 && value <= 348.75) return 'NW'
+        else return '...'
+      }
       case WeatherValueType.WIND_SPEED:
         value = Math.round(val.value as number)
         break
@@ -226,11 +277,13 @@ export default class Weather extends Vue {
   align-items: flex-start;
   justify-content: space-around;
 
-  > #temp {
+  > * {
+    flex: 1;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: flex-end;
+    width: 100%;
 
     > img {
       height: 100%;
