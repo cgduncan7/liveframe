@@ -30,7 +30,7 @@ export default class SunTimes extends Vue {
   constructor () {
     super()
 
-    if (Object.keys(this.$store.state.sunTimes).length === 0) {
+    if (this.$store.state.sunTimes === undefined) {
       this.$store.dispatch('fetchSunTimes')
     }
   }

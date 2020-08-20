@@ -34,6 +34,7 @@ import SunTimes from '@/components/SunTimes.vue'
 import Info from '@/components/Info.vue'
 import Navigation from '@/components/Navigation.vue'
 import Weather from './Weather.vue'
+import { IWeather } from '../types/weather'
 
 Vue.component('FrameMenuIcon', FrameMenuIcon)
 Vue.component('SunTimes', SunTimes)
@@ -48,12 +49,21 @@ export default class FrameMenu extends Vue {
   constructor () {
     super()
 
-    if (Object.keys(this.$store.state.sunTimes).length === 0) {
+    if (this.$store.state.sunTimes === undefined) {
       this.$store.dispatch('fetchSunTimes')
     }
 
-    if (Object.keys(this.$store.state.weather).length === 0) {
+    if (this.$store.state.weather === undefined) {
       this.$store.dispatch('fetchWeather')
+    } else {
+      const date = new Date((this.$store.state.weather as IWeather).observation_time.value)
+      const m = date.getMonth()
+      const d = date.getDate()
+      const nowM = (this.$store.state.date as Date).getMonth()
+      const nowD = (this.$store.state.date as Date).getDate()
+      if (nowM > m || nowD > d) {
+        this.$store.dispatch('fetchWeather')
+      }
     }
 
     const d: Date = this.$store.getters.date
