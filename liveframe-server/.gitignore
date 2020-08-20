@@ -10,3 +10,4 @@ sunrise_hour
 weather.json
 
 # env files
+.env
