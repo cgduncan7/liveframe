@@ -5,7 +5,9 @@
     </div>
     <div id="nav">
       <img id="nav-icon" src="@/assets/logo_xsmall.png" v-on:click="toggleMenu">
+      <!-- <img id="nav-camera" src="@/assets/camera.svg"> -->
       <div id="nav-title">Liveframe</div>
+      <div id="nav-clock">12:34:56 AM</div>
     </div>
     <FrameMenu v-if="menuVisible"></FrameMenu>
   </div>
@@ -34,6 +36,10 @@ export default class Frame extends Vue {
   toggleMenu () {
     this.menuVisible = !this.menuVisible
   }
+
+  togglePicture () {
+
+  }
 }
 </script>
 
@@ -55,9 +61,12 @@ export default class Frame extends Vue {
 #nav {
   position: relative;
   height: 30px;
-  padding: 1px 10px;
+  width: 100%;
+  padding: 1px;
   background: $base-gray;
   color: $base-white;
+  display: inline-grid;
+  grid-template-columns: 40px 40px 60px auto 140px;
 
   * {
     height: 28px;
@@ -66,15 +75,33 @@ export default class Frame extends Vue {
   #nav-title {
     display: block;
     line-height: 28px;
-    margin-left: 30px;
-    margin-right: 30px;
+    grid-column-start: 4;
+    grid-column-end: 5;
+    justify-self: center;
   }
 
   #nav-icon {
-    display: block;
-    position: absolute;
     width: 28px;
     height: 28px;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    justify-self: center;
+  }
+
+  #nav-camera {
+    width: 28px;
+    height: 28px;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    justify-self: center;
+  }
+
+  #nav-clock {
+    display: block;
+    line-height: 28px;
+    grid-column-start: 5;
+    justify-self: end;
+    margin-right: 5px;
   }
 }
 </style>
