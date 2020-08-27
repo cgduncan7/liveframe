@@ -8,3 +8,9 @@ sunrise_hour
 
 # files for weather
 weather.json
+
+# env files
+.env
+
+# image dev uploads folder
+images/
