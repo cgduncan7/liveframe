@@ -7,7 +7,7 @@
       <img id="nav-icon" src="@/assets/logo_xsmall.png" v-on:click="toggleMenu">
       <!-- <img id="nav-camera" src="@/assets/camera.svg"> -->
       <div id="nav-title">Liveframe</div>
-      <div id="nav-clock">12:34:56 AM</div>
+      <div id="nav-clock">{{ currentTime }}</div>
     </div>
     <FrameMenu v-if="menuVisible"></FrameMenu>
   </div>
@@ -22,23 +22,18 @@ Vue.component('FrameMenu', FrameMenu)
 @Component
 export default class Frame extends Vue {
   @Prop() private childComponentSource!: string
-  private menuVisible!: boolean
-
-  constructor () {
-    super()
-    const d: Date = this.$store.getters.date
-    const date = d.getDate()
-    const month = d.getMonth()
-
-    this.menuVisible = date === 24 && month === 1
-  }
+  private menuVisible: boolean = false
 
   toggleMenu () {
     this.menuVisible = !this.menuVisible
   }
 
-  togglePicture () {
+  get date (): Date {
+    return this.$store.getters.date
+  }
 
+  get currentTime () : String {
+    return this.date.toLocaleTimeString('en-US', { timeZone: 'Europe/Amsterdam' })
   }
 }
 </script>
