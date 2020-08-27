@@ -175,7 +175,6 @@ export default class Weather extends Vue {
 
   isWindDirection (windDir: string): boolean {
     const degrees = this.weather.wind_direction.value
-    console.log(degrees)
     switch (windDir) {
       case 'north': return degrees >= 348.76 || degrees <= 33.75
       case 'north-east': return degrees >= 33.76 && degrees <= 78.75
@@ -208,7 +207,6 @@ export default class Weather extends Vue {
       }
       case WeatherValueType.WIND_DIRECTION: {
         const value = val.value as number
-        console.log(value)
         if (value >= 348.76 || value <= 33.75) return 'N'
         else if (value >= 33.76 && value <= 78.75) return 'NE'
         else if (value >= 78.76 && value <= 123.75) return 'E'
