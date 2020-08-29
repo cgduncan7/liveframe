@@ -6,6 +6,8 @@ Digital media frame environment
 - liveframe-server: server which maintains all content
 
 ## TODO
-[ ] move to k8s cluster
-[ ] add image service
-[ ] add realtime clock in bottom bar
+- [ ] move to k8s cluster
+- [x] add image service
+- [x] add realtime clock in bottom bar
+- [ ] test image service
+- [ ] frontend for image upload
