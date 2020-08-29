@@ -1,5 +1,11 @@
 <template>
   <div id="root">
+    <h3>Version 3!</h3>
+    <ul>
+      <li>Added weather information. Click the thermometer above next to the sun times.</li>
+      <li>Added a clock to the bottom nav-bar.</li>
+      <li>Working on image saving/uploading!</li>
+    </ul>
     <h3>Version 2!</h3>
     <ul>
       <li>Added menu pop-up (this). Click <span><img width=20 height=20 src="@/assets/logo_xsmall.png"/></span> in bottom right to open.</li>
