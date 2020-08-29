@@ -30,7 +30,7 @@ export default class SunTimes extends Vue {
   constructor () {
     super()
 
-    if (Object.keys(this.$store.state.sunTimes).length === 0) {
+    if (this.$store.state.sunTimes === undefined) {
       this.$store.dispatch('fetchSunTimes')
     }
   }
@@ -58,17 +58,7 @@ export default class SunTimes extends Vue {
   }
 
   currentTime () : String {
-    let ampm = 'AM'
-    let hours = this.date.getHours()
-    if (hours > 12) {
-      hours -= 12
-      ampm = 'PM'
-    } else if (hours === 12) {
-      ampm = 'PM'
-    } else if (hours === 0) {
-      hours = 12
-    }
-    return `${hours}:${('0' + this.date.getMinutes()).slice(-2)}:${('0' + this.date.getSeconds()).slice(-2)} ${ampm}`
+    return (this.date as Date).toLocaleTimeString('en-US', { timeZone: 'Europe/Amsterdam' })
   }
 
   calculateSunPosition () {
@@ -155,7 +145,7 @@ export default class SunTimes extends Vue {
   position: absolute;
   width: 100%;
   height: 1px;
-  border: 1px solid $base-black;
+  border: 1px solid $base-white;
   top: 50%;
 }
 </style>
