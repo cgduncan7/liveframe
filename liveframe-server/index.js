@@ -14,7 +14,7 @@ const qrcode = require('qrcode')
 const authenticator = require('./authenticator')
 
 const imagePath = process.env.NODE_ENV === 'production'
-    ? '/var/images'
+    ? '/var/www/images'
     : path.join(__dirname, '/images')
 
 app.use(cors())
