@@ -9,5 +9,5 @@ Digital media frame environment
 - [ ] move to k8s cluster
 - [x] add image service
 - [x] add realtime clock in bottom bar
-- [ ] test image service
+- [x] test image service
 - [ ] frontend for image upload
