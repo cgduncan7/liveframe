@@ -121,7 +121,7 @@ export default class Weather extends Vue {
       case 'fog': return 'Fog'
       case 'cloudy': return 'Cloudy'
       case 'mostly_cloudy': return 'Mostly Cloudy'
-      case 'partly_cloudy': return 'Partly Cloud'
+      case 'partly_cloudy': return 'Partly Cloudy'
       case 'mostly_clear':
       case 'clear': return 'Sunny'
       default: return 'Sunny'
