@@ -21,7 +21,7 @@ const authenticator = (req, res, next) => {
   if (user === process.env.USERNAME&& pass === process.env.PASSWORD) {
     next()
   } else {
-    console.error('invalid user/pass')
+    console.error('invalid user/pass', process.env.USERNAME, process.env.PASSWORD)
     res.sendStatus(401)
     return
   }
