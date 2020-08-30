@@ -9,6 +9,7 @@ const authenticator = (req, res, next) => {
   const [authType, encodedToken] = auth.split(' ')
 
   if (authType.toLowerCase() !== 'basic') {
+    console.error('invalid auth type')
     res.sendStatus(401)
     return
   }
@@ -20,6 +21,7 @@ const authenticator = (req, res, next) => {
   if (user === process.env.USERNAME&& pass === process.env.PASSWORD) {
     next()
   } else {
+    console.error('invalid user/pass')
     res.sendStatus(401)
     return
   }
