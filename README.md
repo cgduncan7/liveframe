@@ -11,3 +11,7 @@ Digital media frame environment
 - [x] add realtime clock in bottom bar
 - [x] test image service
 - [ ] frontend for image upload
+
+## Notes
+- Image upload works well for now. Properly requires authentication and saves original photo to device. Frontend should allow more control over cropping as it now just takes the middle of the image.
+- Maybe use sockets to control when restarts can happen?
