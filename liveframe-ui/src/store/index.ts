@@ -77,7 +77,6 @@ export default new Vuex.Store<IState>({
       axios.get(`${serverUrl}/weather`, options)
         .then((res) => {
           const transformedData = transformWeatherData(res.data)
-          console.log(transformedData)
           commit('setWeather', transformedData)
         })
     }
