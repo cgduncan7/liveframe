@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import axios, { AxiosRequestConfig } from 'axios'
 
 import { IState } from '../types/store'
+import { transformWeatherData } from '@/lib/transformWeatherData'
 
 Vue.use(Vuex)
 
@@ -75,7 +76,9 @@ export default new Vuex.Store<IState>({
       }
       axios.get(`${serverUrl}/weather`, options)
         .then((res) => {
-          commit('setWeather', res.data)
+          const transformedData = transformWeatherData(res.data)
+          console.log(transformedData)
+          commit('setWeather', transformedData)
         })
     }
   },
