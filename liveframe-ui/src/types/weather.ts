@@ -16,8 +16,6 @@ export interface IWeatherValue {
 }
 
 export interface IWeather {
-  lat: number
-  lon: number
   temp: IWeatherValue
   feels_like: IWeatherValue
   wind_speed: IWeatherValue
@@ -26,4 +24,31 @@ export interface IWeather {
   precipitation: IWeatherValue
   weather_code: IWeatherValue
   observation_time: IWeatherValue
+}
+
+export interface IRawTimelineIntervalValues {
+  temperature: number
+  temperatureApparent: number
+  weatherCode: number
+  windSpeed: number
+  windDirection: number
+  humidity: number
+  precipitationIntensity: number
+  precipitationProbability: number
+  precipitationType: number
+}
+export interface IRawTimelineInterval {
+  startTime: string
+  values: IRawTimelineIntervalValues
+}
+export interface IRawTimeline {
+  timestep: string
+  startTime: string
+  endTime: string
+  intervals: IRawTimelineInterval[]
+}
+export interface IRawWeatherData {
+  data: {
+    timelines: IRawTimeline[]
+  }
 }

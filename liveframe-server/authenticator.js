@@ -18,7 +18,7 @@ const authenticator = (req, res, next) => {
 
   const [user, pass] = decodedToken.split(':')
 
-  if (user === process.env.USERNAME&& pass === process.env.PASSWORD) {
+  if (user === process.env.USERNAME && pass === process.env.PASSWORD) {
     next()
   } else {
     console.error('invalid user/pass', process.env.USERNAME, process.env.PASSWORD)
